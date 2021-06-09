@@ -21,5 +21,8 @@ namespace ActorCluster
 
         protected override void PostStop() => Log.Info($"GroupGuide {groupName}-{name} left");
         protected override void OnReceive(object message) => Log.Info($"GroupGuide {groupName}-{name} received message: " + Convert.ToString(message));
+
+        public static Props Props(string groupName, string name) =>
+            Akka.Actor.Props.Create(() => new GroupGuide(groupName, name));
     }
 }

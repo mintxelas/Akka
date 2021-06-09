@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using ActorCluster;
 using Akka.Actor;
-using Akka.Configuration;
-using Akka.Configuration.Hocon;
+using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace ActorClusterTests
@@ -13,7 +10,7 @@ namespace ActorClusterTests
     {
         private const string TestActorSystemName = "TestActorSystemName";
         private const string TopSupervisorActorName = "TopSupervisor";
-        private const int TimeoutForActorCreation = 3;
+        private const int TimeoutForLocatingActor = 3;
 
         private static readonly string TopSupervisorActorPath = $"akka://{TestActorSystemName}/user/{TopSupervisorActorName}";
 
@@ -31,12 +28,12 @@ namespace ActorClusterTests
         }
 
         [Fact]
-        public async Task top_supervisor_is_started_with_system_within_time()
+        public async Task top_supervisor_is_started_within_time()
         {
-            var expectedActor = actorSystem.ActorOf(TopSupervisor.Props(), TopSupervisorActorName);
-
+            var expectedActor = actorSystem.ActorOf<TopSupervisor>(TopSupervisorActorName);
+            
             var topSupervisorRef = actorSystem.ActorSelection(TopSupervisorActorPath);
-            var topSupervisor = await topSupervisorRef.ResolveOne(TimeSpan.FromSeconds(TimeoutForActorCreation));
+            var topSupervisor = await topSupervisorRef.ResolveOne(TimeSpan.FromSeconds(TimeoutForLocatingActor));
             Assert.Equal(expectedActor, topSupervisor);
         }
 
