@@ -31,9 +31,7 @@ namespace ActorClusterTests
         public async Task top_supervisor_is_started_within_time()
         {
             var expectedActor = actorSystem.ActorOf<TopSupervisor>(TopSupervisorActorName);
-            
-            var topSupervisorRef = actorSystem.ActorSelection(TopSupervisorActorPath);
-            var topSupervisor = await topSupervisorRef.ResolveOne(TimeSpan.FromSeconds(TimeoutForLocatingActor));
+            var topSupervisor = await actorSystem.ActorSelection(TopSupervisorActorPath).ResolveOne(TimeSpan.FromSeconds(TimeoutForLocatingActor));
             Assert.Equal(expectedActor, topSupervisor);
         }
 

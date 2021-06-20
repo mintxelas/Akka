@@ -34,9 +34,7 @@ namespace ActorCluster
                     break;
             }
         }
-
-        //public static Props Props() => Akka.Actor.Props.Create<TopSupervisor>();
-
+        
         public class GetGuidesQuery
         {
             public string CorrelationId { get; }
